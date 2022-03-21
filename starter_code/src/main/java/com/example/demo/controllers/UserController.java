@@ -53,15 +53,24 @@ public class UserController {
 		log.info("userName: " + createUserRequest.getUsername());
 		log.info("password: " + createUserRequest.getPassword());
 
-		User user = new User();
-		Cart cart = new Cart();
-		user.setUsername(createUserRequest.getUsername());
-		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
-		log.info("encryptedPassword: " + user.getPassword());
-		cartRepository.save(cart);
-		user.setCart(cart);
-		userRepository.save(user);
-		return ResponseEntity.ok(user);
+		if (isValidPassword(createUserRequest.getPassword())) {
+			User user = new User();
+			Cart cart = new Cart();
+			user.setUsername(createUserRequest.getUsername());
+			user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
+			log.info("encryptedPassword: " + user.getPassword());
+			cartRepository.save(cart);
+			user.setCart(cart);
+			userRepository.save(user);
+			return ResponseEntity.ok(user);
+		}else {
+			return ResponseEntity.badRequest().build();
+		}
+	}
+
+	private  boolean isValidPassword(String password){
+		return  password != null && password.length() >= 3;
+
 	}
 	
 }

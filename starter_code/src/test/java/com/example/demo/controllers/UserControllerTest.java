@@ -42,7 +42,6 @@ public class UserControllerTest {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder= mock(BCryptPasswordEncoder.class);
 
-    private static ObjectMapper mapper = new ObjectMapper();
 
 
     @Before
